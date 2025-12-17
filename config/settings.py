@@ -5,8 +5,8 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-CHANGE_ME_FOR_PRODUCTION")
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
-ALLOWED_HOSTS = ["*"]
+DEBUG = False
+ALLOWED_HOSTS =[os.environ.get('WEB_EXTERNAL_HOSTNAME'), 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -50,9 +50,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600,
+    'default': dj_database_url.config(
+        default=os.environ.get('postgresql://astro_fus7_user:KIKLywdlSlqd5VXMJqNg0hMMrdfpJsaA@dpg-d51dpe5actks73f7svn0-a.oregon-postgres.render.com/astro_fus7'),
+        conn_max_age=600
     )
 }
 
