@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block head %}
+<style>
+:root { --primary:#1a237e; --accent:#4a148c; --secondary:#ffd700; --text:#333; --bg:#f8f9fa; --radius:14px; }
+body { font-family:'Poppins',sans-serif; background: linear-gradient(135deg, rgba(26,35,126,.08), rgba(74,20,140,.08)), var(--bg); min-height: 100vh; }
+.wrap { width: 95%; max-width: 960px; margin: 40px auto; }
+.card { background:#fff; border-radius: var(--radius); box-shadow: 0 20px 40px rgba(0,0,0,.12); border:1px solid rgba(0,0,0,.06); overflow:hidden; }
+.card-header { background: linear-gradient(135deg, var(--primary), var(--accent)); color:#fff; padding: 22px 24px; display:flex; align-items:center; justify-content:space-between; }
+.title { font-size: 1.4rem; font-weight:700; }
+.badge { background: rgba(255,255,255,.18); padding: 6px 10px; border-radius: 999px; font-weight:600; }
+.content { display:grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 22px 24px; }
+.summary { border:1px dashed rgba(0,0,0,.08); border-radius: 12px; padding: 16px; }
+.row { display:flex; justify-content:space-between; margin: 8px 0; }
+.amount { font-size: 1.8rem; font-weight:800; color: var(--primary); }
+.actions { display:flex; gap: 12px; margin-top: 16px; }
+.btn { flex:1; padding: 12px 16px; border-radius: 10px; border:none; cursor:pointer; font-weight:700; }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); color:#fff; box-shadow: 0 8px 24px rgba(26,35,126,.25); }
+.btn-secondary { background:#fff; color: var(--primary); border:1px solid rgba(26,35,126,.25); }
+.note { margin-top: 10px; color:#666; font-size:.95rem; }
+.status { padding: 8px 12px; border-radius: 999px; display:inline-block; background:#f1f5ff; color:#1a237e; font-weight:700; }
+@media (max-width: 768px) { .content { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+{% block content %}
+<div class="wrap">
+  <div class="card">
+    <div class="card-header">
+      <div class="title"><i class="fas fa-credit-card"></i> Checkout</div>
+      <div class="badge">Ref: {{ payment.reference }}</div>
+    </div>
+    <div class="content">
+      <div>
+        <div class="summary">
+          <div class="row"><div>Service</div><div><strong>{{ payment.booking.service }}</strong></div></div>
+          <div class="row"><div>Name</div><div>{{ payment.booking.name }}</div></div>
+          <div class="row"><div>Email</div><div>{{ payment.booking.email }}</div></div>
+          <div class="row"><div>Phone</div><div>{{ payment.booking.phone }}</div></div>
+          <div class="row"><div>Status</div><div class="status">{{ payment.status }}</div></div>
+        </div>
+        <p class="note">Complete payment to confirm your booking. On success, your booking status becomes confirmed.</p>
+      </div>
+      <div>
+        <div class="amount">₹{{ payment.amount }}</div>
+        <form method="post" class="actions">
+          {% csrf_token %}
+          <button name="action" value="simulate_success" class="btn btn-primary"><i class="fas fa-check-circle"></i> Pay Now</button>
+          <button name="action" value="simulate_fail" class="btn btn-secondary"><i class="fas fa-times-circle"></i> Fail Test</button>
+        </form>
+        <div class="note">This is test checkout. Gateway integration can be added when keys are provided.</div>
+      </div>
+    </div>
+  </div>
+  <div class="note" style="margin-top:12px;">You will be redirected to the home page after a successful payment.</div>
+</div>
+{% endblock %}
